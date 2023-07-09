@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="text-right">
+    <a type="button" style="float: right; margin-right: 5%; margin-bottom: 2%;" class="btn btn-primary" href="{% url 'product_create' %}">Add Product</a>
+    <br>
+{% endif %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Product ID</th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Product Image</th>
+        <th scope="col">Product Price</th>
+        {% if user.is_authenticated %}
+        <th scope="col">Actions</th>
+        {% endif %}
+      </tr> 
+    </thead>
+    <tbody>
+        {% for product in products %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <th scope="row">{{ product.id }}</th>
+        <td>{{ product.name }}</td>
+        <td>
+          <img src="{{ product.image.url }}" alt="Product Image" width="100">
+        </td>
+        <td>{{ product.price }}</td>
+        {% if user.is_authenticated %}
+        <td>
+            <a href="{% url 'product_edit' product.id %}">Edit</a>
+            <a href="{% url 'product_delete' product.id %}" onclick="event.preventDefault(); document.getElementById('delete-form-{{ product.id }}').submit();">Delete</a>
+                <form id="delete-form-{{ product.id }}" action="{% url 'product_delete' product.id %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                    <input type="hidden" name="product" value="{{ product.id }}">
+                </form>
+            </a>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
