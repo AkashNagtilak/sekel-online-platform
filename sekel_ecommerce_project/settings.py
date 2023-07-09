@@ -37,9 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ecommerce_application',
     'widget_tweaks',
     'bootstrap4',
+    
+    # Manually Added
+    'ecommerce_application',
+    'apis',
 ]
 
 MIDDLEWARE = [
