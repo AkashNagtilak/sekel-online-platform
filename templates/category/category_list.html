@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="text-right">
+<a type="button" style="float: right; margin-right: 5%; margin-bottom: 2%;" class="btn btn-primary" href="{% url 'Category_create' %}">Add Category</a>
+<br>
+{% endif %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Category ID</th>
+        <th scope="col">Category Name</th>
+        <th scope="col">Parent Category</th>
+        {% if user.is_authenticated %}
+        <th scope="col">Actions</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+        {% for category in category %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ category.id }}</td>
+        <td>{{ category.name }}</td>
+        <td>{{ category.parent_category }}</td>
+        {% if user.is_authenticated %}
+        <td>
+            <a href="{% url 'Category_edit' category.id %}">Edit</a>
+            <a href="{% url 'Category_delete' category.id %}" onclick="event.preventDefault(); document.getElementById('delete-form-{{ category.id }}').submit();">Delete</a>
+                <form id="delete-form-{{ category.id }}" action="{% url 'Category_delete' category.id %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                    <input type="hidden" name="category_id" value="{{ category.id }}">
+                </form>
+            </a>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

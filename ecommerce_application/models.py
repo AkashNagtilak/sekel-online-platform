@@ -13,10 +13,11 @@ class Category(models.Model):
 
 class Product(models.Model):
     """
-        Model for product.
+    Model for product.
     """
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=8, decimal_places=2)
+    image = models.ImageField(upload_to='product_images/')
     categories = models.ManyToManyField(Category, related_name='products')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_product_related_manager")
 
